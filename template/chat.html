@@ -1,0 +1,46 @@
+<html>
+	<body>
+		<p>{{ .Username }} (<a href="/logout">Logout</a>)</p>
+		<p><b><a href="/?room={{ .Current }}">{{ .Current }}</a></b></p>
+		<hr>
+		{{ range .Rooms }}
+		<p><a href="/?room={{ . }}">{{ . }}</a></p>
+		{{ end }}
+		<hr>
+		<form method="POST" action="/add">
+			<input type="text" name="room">
+			<button type="submit">+</button>
+		</form>
+
+		<input id="input" type="text" />
+		<button onclick="send()">Send</button>
+<pre id="status"></pre>
+<pre id="output">
+{{ range .Chat }}
+{{ .Content }}
+{{ .Author }} {{ .Date }}
+{{ end }}
+</pre>
+
+		<script>
+			var input = document.getElementById("input");
+			var output = document.getElementById("output");
+			var stat = document.getElementById("status");
+			var socket = new WebSocket({{ .WebSocket }});
+
+			socket.onopen = function () {
+				stat.innerHTML += "Status: Connected\n";
+			};
+
+			socket.onmessage = function (e) {
+				var msg = JSON.parse(e.data);
+				output.innerHTML += msg.content + "\n" + msg.author + " " + msg.date + "\n\n";
+			};
+
+			function send() {
+				socket.send(input.value + "\n");
+				input.value = "";
+			}
+		</script>
+	</body>
+</html>
