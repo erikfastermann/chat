@@ -22,9 +22,8 @@ const (
 )
 
 const (
-	templateRegister = "register.html"
-	templateLogin    = "login.html"
-	templateChat     = "chat.html"
+	templateLogin = "login.html"
+	templateChat  = "chat.html"
 )
 
 type Handler struct {

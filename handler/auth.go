@@ -29,10 +29,6 @@ func (h *Handler) checkAuth(r *http.Request) (string, error) {
 }
 
 func (h *Handler) register(w http.ResponseWriter, r *http.Request) error {
-	if r.Method == http.MethodGet {
-		return h.Templates.ExecuteTemplate(w, templateRegister, nil)
-	}
-
 	if r.Method != http.MethodPost {
 		return errMethod(r.Method)
 	}
