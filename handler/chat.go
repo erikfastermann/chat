@@ -71,7 +71,14 @@ func (h *Handler) chat(username string, w http.ResponseWriter, r *http.Request) 
 			}()
 
 			log.Print(chat.Listen(func(m *db.Msg) error {
-				if err := json.NewEncoder(ws).Encode(m); err != nil {
+				msg := struct {
+					db.Msg
+					IsUser bool `json:"is_user"`
+				}{
+					Msg:    *m,
+					IsUser: m.Author == username,
+				}
+				if err := json.NewEncoder(ws).Encode(msg); err != nil {
 					return err
 				}
 				return nil

@@ -222,8 +222,6 @@
 </head>
 
 <body>
-<pre id="chat">
-</pre>
 	<div class="container">
 		<div class="head"> 
 			<div class="headRoomNameContainer"> 
@@ -235,20 +233,16 @@
 		</div>
 
 		<div class="chat"> 
-			<ul class="unsortedChatList">
+			<ul class="unsortedChatList" id="chat">
 				{{ $username := .Username }}
 				{{ range .Chat }}
-				{{ if (eq .Author $username) }}
-				<li class="ownChatItem">
-					{{ else }}
-					<li class="foreignChatItem">
-						{{ end }}
+					{{ if (eq .Author $username) }} <li class="ownChatItem"> {{ else }} <li class="foreignChatItem"> {{ end }}
 						<div class="chatTextItem">
 							<p><b>{{ .Author }}</b></p>
 							<p>{{ .Content }}</p>
 						</div>
 					</li>
-					{{ end }}
+				{{ end }}
 			</ul>
 		</div>
 
@@ -261,7 +255,7 @@
 			<ul class="unsortedRoomList">
 				{{ range .Rooms }}
 				<li class="roomItem">
-					<div href="/?room={{ . }}" class="roomTextItem" >{{ . }}</div>
+					<div class="roomTextItem" ><a href="/?room={{ . }}" >{{ . }}</a></div>
 				</li>
 				{{ end }}
 
@@ -284,7 +278,30 @@
 
 		socket.onmessage = function (e) {
 			var msg = JSON.parse(e.data);
-			chat.innerHTML += msg.author + "\n" + msg.content + "\n\n";
+
+			var pAuthor = document.createElement("p");
+			var bAuthor = document.createElement("b");
+			var textAuthor = document.createTextNode(msg.author);
+			bAuthor.appendChild(textAuthor);
+			pAuthor.appendChild(bAuthor);
+
+			var pContent = document.createElement("p");
+			var textContent = document.createTextNode(msg.content);
+			pContent.appendChild(textContent);
+
+			var div = document.createElement("div");
+			div.className = "chatTextItem";
+			div.appendChild(pAuthor);
+			div.appendChild(pContent);
+
+			var li = document.createElement("li");
+			li.className = "foreignChatItem";
+			if (msg.is_user) {
+				li.className = "ownChatItem";
+			};
+			li.appendChild(div);
+
+			chat.appendChild(li);
 		};
 
 		function send() {
