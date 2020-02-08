@@ -40,7 +40,7 @@ func Open(dbDir string) (*DB, error) {
 	}
 
 	var err error
-	db.users.File, err = db.open(csvUsers)
+	db.users.File, err = db.open(false, csvUsers)
 	if err != nil {
 		return nil, err
 	}
@@ -54,6 +54,12 @@ func Open(dbDir string) (*DB, error) {
 			u, err := userFromRec(r)
 			if err != nil {
 				return err
+			}
+			if u.username == "" {
+				return errors.New(csvUsers + ": empty username found")
+			}
+			if _, ok := db.users.names[u.username]; ok {
+				return fmt.Errorf("duplicate username %q in %s", u.username, csvUsers)
 			}
 			db.users.names[u.username] = u
 		}
@@ -89,7 +95,7 @@ func Open(dbDir string) (*DB, error) {
 				return err
 			}
 
-			f, err := db.open(dirRooms, n)
+			f, err := db.open(false, dirRooms, n)
 			if err != nil {
 				return err
 			}
@@ -128,11 +134,14 @@ func Open(dbDir string) (*DB, error) {
 	return db, nil
 }
 
-func (db *DB) open(path ...string) (*os.File, error) {
-	path = append([]string{db.dir}, path...)
+func (db *DB) open(excl bool, path ...string) (*os.File, error) {
+	flags := os.O_RDWR | os.O_CREATE | os.O_SYNC
+	if excl {
+		flags |= os.O_EXCL
+	}
 	return os.OpenFile(
-		filepath.Join(path...),
-		os.O_RDWR|os.O_CREATE|os.O_SYNC,
+		filepath.Join(append([]string{db.dir}, path...)...),
+		flags,
 		0644,
 	)
 }

@@ -70,6 +70,10 @@ func (db *DB) UserByToken(token string) (username string, err error) {
 }
 
 func (db *DB) AddUser(username string, passHash []byte) error {
+	if username == "" {
+		return fmt.Errorf("%w, username empty", ErrInvalidName)
+	}
+
 	db.users.Lock()
 	defer db.users.Unlock()
 

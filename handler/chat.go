@@ -24,7 +24,7 @@ func (h *Handler) addRoom(w http.ResponseWriter, r *http.Request) error {
 		return errMethod(r.Method)
 	}
 
-	room := r.FormValue(queryRoom)
+	room := r.PostFormValue(queryRoom)
 	if err := h.DB.AddRoom(room); err != nil {
 		if errors.Is(err, db.ErrInvalidName) || errors.Is(err, db.ErrExists) {
 			return badRequest(err)

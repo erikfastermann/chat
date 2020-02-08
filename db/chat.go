@@ -77,7 +77,7 @@ func (db *DB) AddRoom(room string) error {
 		return fmt.Errorf("room %q: %w", room, ErrExists)
 	}
 
-	f, err := db.open(dirRooms, room+".csv")
+	f, err := db.open(true, dirRooms, room+".csv")
 	if err != nil {
 		return err
 	}

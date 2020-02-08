@@ -33,14 +33,14 @@ func (h *Handler) register(w http.ResponseWriter, r *http.Request) error {
 		return errMethod(r.Method)
 	}
 
-	username, password := r.FormValue("username"), r.FormValue("password")
+	username, password := r.PostFormValue("username"), r.PostFormValue("password")
 	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
 
 	if err := h.DB.AddUser(username, hash); err != nil {
-		if errors.Is(err, db.ErrExists) {
+		if errors.Is(err, db.ErrExists) || errors.Is(err, db.ErrInvalidName) {
 			return badRequest(err)
 		}
 		return err
