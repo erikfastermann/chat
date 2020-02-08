@@ -1,111 +1,23 @@
 <!DOCTYPE html>
 <head>
 	<title>Login</title>
-	<style>
-		html, body {
-			height: 100%;
-		}
-		body {
-			margin:0px;
-			padding: 0px;
-			font-size: 2vh;
-		}
-
-		.container{ 
-			padding: 0;
-			height: 100vh;
-			background-color: grey;
-			display: grid;
-			grid-template-columns: 30% 40% 30%;
-			grid-template-rows: 25% 50% 25%;
-		}
-
-		.head{
-			background-color: DarkCyan;
-			grid-column-start: 2;
-			grid-column-end: 2;
-			grid-row-start: 2;
-			grid-row-end: 2;
-			display: grid;
-			grid-template-columns: 10% auto 10%;
-			grid-template-rows: 5% 5% 10% 5% 5% 10% 10% 10% 5% 10% 5% 5% 15%;
-		}
-
-		.usernameTag{
-			grid-column-start: 2;
-			grid-column-end: 2;
-			grid-row-start: 2;
-			grid-row-end: 2;
-		}
-
-		.usernameInput{
-			resize: none;
-			grid-column-start: 2;
-			grid-column-end: 2;
-			grid-row-start: 3;
-			grid-row-end: 3;
-		}
-
-		.passwordTag{
-			grid-column-start: 2;
-			grid-column-end: 2;
-			grid-row-start: 5;
-			grid-row-end: 5;
-		}
-
-		.passwordInput{
-			resize: none;
-			grid-column-start: 2;
-			grid-column-end: 2;
-			grid-row-start: 6;
-			grid-row-end: 6;
-		}
-
-		.buttonLogin{
-			grid-column-start: 2;
-			grid-column-end: 2;
-			grid-row-start: 8;
-			grid-row-end: 8;
-			font-size: 2vh;
-		}
-
-		.buttonRegister{
-			grid-column-start: 2;
-			grid-column-end: 2;
-			grid-row-start: 10;
-			grid-row-end: 10;
-			font-size: 2vh;
-		}
-
-		.ErrorMessage{
-			color: darkred;
-			font-weight: bold;
-			grid-column-start: 2;
-			grid-column-end: 2;
-			grid-row-start: 12;
-			grid-row-end: 12;
-		}
-	</style>
 </head>
 
 <body>
-	<div class="container">
-		<div class="head">
-			<form method="POST" action="/login">
-				<div class="usernameTag">Username</div>
-				<input type="text" class="usernameInput" name="username"></input>
-				<div class="passwordTag">Password</div>
-				<input type="password" class="passwordInput" name="password"></input>
-				<button type="submit" class="buttonLogin">Login</button>
-			</form>
+	<h1>Login</h1>
+	<form method="POST" action="/login">
+		Username: <input name="username"><br><br>
+		Password: <input type="password" name="password"><br><br>
+		<button type="submit">Login</button>
+	</form>
 
-			<form method="POST" action="/register">
-				<div class="usernameTag">Username</div>
-				<input type="text" class="usernameInput" name="username"></input>
-				<div class="passwordTag">Password</div>
-				<input type="password" class="passwordInput" name="password"></input>
-				<button type="submit" class="buttonRegister">Register</button>
-			</form>
-		</div>
-	</div>
+	<br>
+	<hr>
+
+	<h1>Register</h1>
+	<form method="POST" action="/register">
+		Username: <input name="username"><br><br>
+		Password: <input type="password" name="password"><br><br>
+		<button type="submit" class="buttonRegister">Register</button>
+	</form>
 </body>
